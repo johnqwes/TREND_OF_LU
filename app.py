@@ -734,6 +734,7 @@ def main():
                         if sy_input >= 2023:
                             for year in range(2023, sy_input + 1):
                                 predicted_value = stacked_model.predict([[year, id_input]])[0]
+                                predicted_value = round(predicted_value)
                                 
                                 # Check if there's an original value for the current year
                                 original_value_available = (year in filtered_data['School Year'].values)
@@ -1012,6 +1013,8 @@ def main():
                             for year in range(2023, sy_input + 1):
                                 if year not in filtered_data['School Year'].values:
                                     predicted_value = stacked_model.predict([[year, id_input]])[0]
+                                    predicted_value = round(predicted_value)
+
                                     fig.add_trace(go.Scatter(
                                         x=[year],
                                         y=[predicted_value],
@@ -1274,6 +1277,8 @@ def main():
                         for year in range(earliest_year, sy_input):
                             if year not in filtered_data['School Year'].values:
                                 predicted_value = stacked_model.predict([[year, id_input, en_input]])[0]
+                                predicted_value = round(predicted_value)
+
                                 fig.add_trace(go.Scatter(
                                     x=[year],
                                     y=[predicted_value],
