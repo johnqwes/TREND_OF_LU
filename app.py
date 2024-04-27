@@ -806,7 +806,7 @@ def main():
 
                             # Rounding off the values to whole numbers
                             latest_value = round(latest_value)
-                            predictions[0] = round(predictions[0])
+                            predictions[0] = max(round(predictions[0]), 0)
 
                             # Checking if the predicted value indicates growth compared to the latest data
                             if predictions[0] > latest_value:
@@ -1066,7 +1066,7 @@ def main():
 
                             # Rounding off the values to whole numbers
                             latest_value = round(latest_value)
-                            predictions[0] = round(predictions[0])
+                            predictions[0] = max(round(predictions[0]), 0)
 
                             # Checking if the predicted value indicates growth compared to the latest data
                             if predictions[0] > latest_value:
@@ -1328,7 +1328,7 @@ def main():
 
                             # Rounding off the values to whole numbers
                             latest_value = round(latest_value)
-                            predictions[0] = round(predictions[0])
+                            predictions[0] = max(round(predictions[0]), 0)
 
                         st.plotly_chart(fig)
 
