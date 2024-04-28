@@ -553,6 +553,14 @@ def main():
                 )
                 st.plotly_chart(fig_enrollment, use_container_width=True)
 
+                # Expander for Dropout data
+                with st.expander("Enrollees Data"):
+                    region = filtered_df.groupby(by="Program Name", as_index=False)["Number of Enrollees"].sum()
+                    region_top5 = region.nlargest(5, "Number of Enrollees")
+                    st.write(region_top5.style.background_gradient(cmap="Oranges"))
+                    csv_dropout = region_top5.to_csv(index=False).encode('utf-8')
+                    st.download_button('Download Enrollees Data', data=csv_dropout, file_name="Enrollees_Data.csv", mime="text/csv")
+
                 # Get the top 5 programs for dropout
                 top5_dropout_programs = filtered_df.groupby(by="Program Name", as_index=False)["Number of Dropout"].sum().nlargest(5, "Number of Dropout")["Program Name"]
 
@@ -579,12 +587,6 @@ def main():
 
                 st.plotly_chart(fig_dropout, use_container_width=True)
 
-                # Get the top 5 programs for graduates
-                top5_programs = filtered_df.groupby(by="Program Name", as_index=False)["Number of Graduates"].sum().nlargest(5, "Number of Graduates")["Program Name"]
-
-                # Filter the DataFrame to include only the top 5 programs
-                filtered_df_top5 = filtered_df[filtered_df["Program Name"].isin(top5_programs)]
-
                 # Expander for Dropout data
                 with st.expander("Dropout Data"):
                     region = filtered_df.groupby(by="Program Name", as_index=False)["Number of Dropout"].sum()
@@ -592,6 +594,12 @@ def main():
                     st.write(region_top5.style.background_gradient(cmap="Oranges"))
                     csv_dropout = region_top5.to_csv(index=False).encode('utf-8')
                     st.download_button('Download Dropout Data', data=csv_dropout, file_name="Dropout_Data.csv", mime="text/csv")
+
+                # Get the top 5 programs for graduates
+                top5_programs = filtered_df.groupby(by="Program Name", as_index=False)["Number of Graduates"].sum().nlargest(5, "Number of Graduates")["Program Name"]
+
+                # Filter the DataFrame to include only the top 5 programs
+                filtered_df_top5 = filtered_df[filtered_df["Program Name"].isin(top5_programs)]
 
                 # Generate a pie chart for Graduate distribution
                 st.markdown("<h2 style=' color: #E97451;'>🎓 Graduates</h2>", unsafe_allow_html=True)
@@ -612,6 +620,14 @@ def main():
                 )
 
                 st.plotly_chart(fig_dropout, use_container_width=True)
+
+                # Expander for Dropout data
+                with st.expander("Graduates Data"):
+                    region = filtered_df.groupby(by="Program Name", as_index=False)["Number of Graduates"].sum()
+                    region_top5 = region.nlargest(5, "Number of Graduates")
+                    st.write(region_top5.style.background_gradient(cmap="Oranges"))
+                    csv_dropout = region_top5.to_csv(index=False).encode('utf-8')
+                    st.download_button('Download Graduates Data', data=csv_dropout, file_name="Graduates_Data.csv", mime="text/csv")
 
 
 
@@ -664,9 +680,15 @@ def main():
                 st.sidebar.header("⭐ Predict Enrollees")
 
                 with st.expander("VIEW DATA"):
-                    st.write(data)
+                    # Replace commas in every column
+                    data_no_commas = data.applymap(lambda x: str(x).replace(',', ''))
+
+                    # Display the DataFrame
+                    st.write(data_no_commas, format="csv", index=False)
+
+                    # Download button for the original CSV data
                     csv_data = data.to_csv(index=False).encode('utf-8')
-                    st.download_button('Download Data', data=csv_data, file_name="Data.csv", mime="text/csv")
+                    st.download_button(label="Download CSV", data=csv_data, file_name='data.csv', mime='text/csv')
 
                     # Button to trigger retraining for the main model
                     if st.button('Retrain Data'):
@@ -937,9 +959,15 @@ def main():
                 st.sidebar.header("⭐ Predict Dropout")
 
                 with st.expander("VIEW DATA"):
-                    st.write(data)
+                    # Replace commas in every column
+                    data_no_commas = data.applymap(lambda x: str(x).replace(',', ''))
+
+                    # Display the DataFrame
+                    st.write(data_no_commas, format="csv", index=False)
+
+                    # Download button for the original CSV data
                     csv_data = data.to_csv(index=False).encode('utf-8')
-                    st.download_button('Download Data', data=csv_data, file_name="Data.csv", mime="text/csv")
+                    st.download_button(label="Download CSV", data=csv_data, file_name='data.csv', mime='text/csv')
 
                     # Button to trigger retraining for the dropout model
                     if st.button('Retrain Data'):
@@ -1192,9 +1220,15 @@ def main():
                     st.sidebar.header("⭐ Predict Graduate")
 
                     with st.expander("VIEW DATA"):
-                        st.write(data)
+                        # Replace commas in every column
+                        data_no_commas = data.applymap(lambda x: str(x).replace(',', ''))
+
+                        # Display the DataFrame
+                        st.write(data_no_commas, format="csv", index=False)
+
+                        # Download button for the original CSV data
                         csv_data = data.to_csv(index=False).encode('utf-8')
-                        st.download_button('Download Data', data=csv_data, file_name="Data.csv", mime="text/csv")
+                        st.download_button(label="Download CSV", data=csv_data, file_name='data.csv', mime='text/csv')
 
                         # Button to trigger retraining for the graduation model
                         if st.button('Retrain Data'):
