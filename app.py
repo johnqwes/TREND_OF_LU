@@ -1225,7 +1225,7 @@ def main():
                         data_no_commas = data.applymap(lambda x: str(x).replace(',', ''))
 
                         # Display the DataFrame
-                        st.write(data_no_commas)
+                        st.write(data_no_commas, format="csv", index=False)
 
                         # Download button for the original CSV data
                         csv_data = data.to_csv(index=False).encode('utf-8')
@@ -1238,7 +1238,7 @@ def main():
                                 st.write('Data retrained successfully!')
                             else:
                                 st.write('Failed to retrain the data. Model file not found!')
-
+        
                     sy_input = st.sidebar.number_input("Enter the year: ", step=1)
                     id_input = st.sidebar.selectbox("Select Program ID: ", data['Program ID'].unique())
                     en_input = st.sidebar.number_input("Enter no. of Enrollees: ", step=1)
