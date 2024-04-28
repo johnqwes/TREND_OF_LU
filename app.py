@@ -23,6 +23,7 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.neural_network import MLPRegressor
 
+mlp_regressor = MLPRegressor(max_iter=1000)
 
 class forecasting_regressor(BaseEstimator, RegressorMixin):
     def __init__(self, change_probability=0.5, max_change=5):
@@ -92,7 +93,7 @@ def retrain_model(data, stacked_model_filename):
         ('xgb', XGBRegressor()),
         ('knn', KNeighborsRegressor(2)),
         ('gb', GradientBoostingRegressor()),  # Gradient Boosting Regressor
-        ('mlp', MLPRegressor()),  # Multi-layer Perceptron Regressor
+        ('mlp', mlp_regressor),  # Multi-layer Perceptron Regressor
     ]
 
     # Initialize stacking regressor using the base models and a meta-regressor
@@ -136,7 +137,7 @@ def retrain_dropout_model(data, dropout_model_filename):
         ('xgb', XGBRegressor()),
         ('knn', KNeighborsRegressor(2)),
         ('gb', GradientBoostingRegressor()),  # Gradient Boosting Regressor
-        ('mlp', MLPRegressor()),  # Multi-layer Perceptron Regressor
+        ('mlp', mlp_regressor),  # Multi-layer Perceptron Regressor
     ]
 
     # Initialize stacking regressor using the base models and a meta-regressor
@@ -1224,7 +1225,7 @@ def main():
                         data_no_commas = data.applymap(lambda x: str(x).replace(',', ''))
 
                         # Display the DataFrame
-                        st.write(data_no_commas, format="csv", index=False)
+                        st.write(data_no_commas)
 
                         # Download button for the original CSV data
                         csv_data = data.to_csv(index=False).encode('utf-8')
@@ -1237,7 +1238,7 @@ def main():
                                 st.write('Data retrained successfully!')
                             else:
                                 st.write('Failed to retrain the data. Model file not found!')
-        
+
                     sy_input = st.sidebar.number_input("Enter the year: ", step=1)
                     id_input = st.sidebar.selectbox("Select Program ID: ", data['Program ID'].unique())
                     en_input = st.sidebar.number_input("Enter no. of Enrollees: ", step=1)
